@@ -19,8 +19,8 @@ namespace Asteroids.Tests.EditMode
             _mockRigidbody = new Rigidbody2D();
             builder.RegisterInstance(_mockRigidbody).As<Rigidbody2D>().AsSelf();
             
-            builder.Register<PlayerMovement>(Lifetime.Singleton)
-                .As<IApplyMovement>()
+            builder.Register<ObjectMover>(Lifetime.Singleton)
+                .As<ISetMovementDirection>()
                 .As<IFixedTickable>();
             
             builder.Register<MovementCalculator>(Lifetime.Singleton)
@@ -38,10 +38,10 @@ namespace Asteroids.Tests.EditMode
         [Test]
         public void PlayerMovementResolved()
         {
-            IApplyMovement applyMovement = _container.Resolve<IApplyMovement>();
+            ISetMovementDirection setMovementDirection = _container.Resolve<ISetMovementDirection>();
             
-            Assert.IsNotNull(applyMovement, "IApplyMovement was not resolved.");
-            Assert.IsInstanceOf<PlayerMovement>(applyMovement, "Resolved IApplyMovement is not of type PlayerMovement.");
+            Assert.IsNotNull(setMovementDirection, "IApplyMovement was not resolved.");
+            Assert.IsInstanceOf<ObjectMover>(setMovementDirection, "Resolved IApplyMovement is not of type PlayerMovement.");
         }
         
         [Test]

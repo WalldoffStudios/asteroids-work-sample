@@ -10,12 +10,12 @@ namespace Asteroids
     }
     public class MovementCalculator : IAddMovementCalculation, ITickable
     {
-        private readonly IApplyMovement _applyMovement;
+        private readonly ISetMovementDirection _setMovementDirection;
         private Vector2 _totalMovement;
 
-        public MovementCalculator(IApplyMovement applyMovement)
+        public MovementCalculator(ISetMovementDirection setMovementDirection)
         {
-            _applyMovement = applyMovement;
+            _setMovementDirection = setMovementDirection;
         }
         
         public void AddCalculation(Vector2 movement)
@@ -25,7 +25,7 @@ namespace Asteroids
 
         public void Tick()
         {
-            _applyMovement.ApplyMovement(_totalMovement);
+            _setMovementDirection.SetDirection(_totalMovement);
             _totalMovement = Vector2.zero;
         }
     }   
