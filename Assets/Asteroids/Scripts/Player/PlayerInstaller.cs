@@ -1,3 +1,4 @@
+using Asteroids.Player.InputHandling;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
