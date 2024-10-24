@@ -3,27 +3,24 @@ using VContainer.Unity;
 
 namespace Asteroids
 {
-    public interface IMoveInputCollector
-    {
-        void MovementInput(Vector2 direction);
-    } 
-    
     public class MovementInputHandler : ITickable
     {
-        private readonly IMoveInputCollector _moveInputCollector;
+        private readonly IAddMovementCalculation _movementCalculation;
+        private readonly float _movementSpeed;
 
         private Vector2 _movementInput;
         
-        public MovementInputHandler(IMoveInputCollector moveInputCollector)
+        public MovementInputHandler(IAddMovementCalculation movementCalculation, float movementSpeed)
         {
-            _moveInputCollector = moveInputCollector;
+            _movementCalculation = movementCalculation;
+            _movementSpeed = movementSpeed;
         }
 
         public void Tick()
         {
             _movementInput.x = Input.GetAxisRaw("Horizontal");
             _movementInput.y = Input.GetAxisRaw("Vertical");
-            _moveInputCollector.MovementInput(_movementInput);
+            _movementCalculation.AddCalculation(_movementInput.normalized * _movementSpeed);
         }
     }   
 }
