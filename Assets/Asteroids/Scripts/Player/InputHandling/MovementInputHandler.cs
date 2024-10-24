@@ -1,7 +1,7 @@
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Asteroids
+namespace Asteroids.Player.InputHandling
 {
     public class MovementInputHandler : ITickable
     {
