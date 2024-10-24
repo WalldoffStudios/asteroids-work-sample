@@ -262,6 +262,8 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  playerPrefab: {fileID: 73963659261797992, guid: cd4b2ba8503ba4dac8e4e2fff8b24903, type: 3}
+  movementSpeed: 50
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
