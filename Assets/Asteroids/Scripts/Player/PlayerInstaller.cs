@@ -17,24 +17,17 @@ namespace Asteroids
                 Debug.LogError("PlayerFacade prefab is not assigned in the PlayerInstaller.");
                 return;
             }
-
-            // Instantiate the PlayerFacade prefab in the scene
+            
             PlayerFacade playerInstance = Instantiate(playerPrefab);
+            builder.RegisterComponent(playerInstance);
             
-            // Step 2: Retrieve the Rigidbody2D component from the instantiated PlayerFacade
-            Rigidbody2D rb = playerInstance.RigidBody;
-
-            if (rb == null)
-            {
-                Debug.LogError("Rigidbody2D component is missing in the PlayerFacade prefab.");
-                return;
-            }
+            builder.Register<PlayerMovement>(Lifetime.Singleton)
+                .WithParameter(playerInstance.RigidBody)
+                .As<IApplyMovement>()
+                .As<IFixedTickable>();
             
-            //Todo: Instead of RigidBody2D I should make an interface on the RigidBody2D 
-            builder.RegisterInstance(rb).As<Rigidbody2D>().AsSelf();
-            
-            builder.Register<PlayerMovement>(Lifetime.Singleton).As<IApplyMovement>().As<IFixedTickable>();
             builder.Register<MovementCalculator>(Lifetime.Singleton).As<IAddMovementCalculation>().As<ITickable>();
+            
             builder.Register<MovementInputHandler>(Lifetime.Singleton)
                 .WithParameter(resolver => resolver.Resolve<IAddMovementCalculation>())
                 .WithParameter(movementSpeed)
