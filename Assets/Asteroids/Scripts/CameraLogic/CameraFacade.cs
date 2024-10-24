@@ -8,8 +8,12 @@ namespace Asteroids
         float AspectRatio { get; }
     }
 
+    public interface IScreenToWorldPoint
+    {
+        Vector2 ScreenToWorldPoint(Vector2 position);
+    }
     
-    public class CameraFacade : ICameraBoundsProvider
+    public class CameraFacade : ICameraBoundsProvider, IScreenToWorldPoint
     {
         private readonly Camera _camera;
 
@@ -20,6 +24,7 @@ namespace Asteroids
 
         public float OrthographicSize => _camera.orthographicSize;
         public float AspectRatio => _camera.aspect;
+        public Vector2 ScreenToWorldPoint(Vector2 position) => _camera.ScreenToWorldPoint(position);
     }   
 }
 
