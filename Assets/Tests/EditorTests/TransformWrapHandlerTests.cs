@@ -9,7 +9,7 @@ namespace Asteroids.Tests.EditMode
     public class TransformWrapHandlerTests
     {
         private MockScreenBoundsProvider mockBoundsProvider;
-        private ScreenWrapHandler screenWrapHandler;
+        private ScreenBoundsHandler _screenBoundsHandler;
         private TransformWrapHandler transformWrapHandler;
         private List<GameObject> testGameObjects;
 
@@ -33,8 +33,8 @@ namespace Asteroids.Tests.EditMode
                 Top = topBound,
                 Bottom = bottomBound
             };
-            screenWrapHandler = new ScreenWrapHandler(mockBoundsProvider);
-            transformWrapHandler = new TransformWrapHandler(screenWrapHandler);
+            _screenBoundsHandler = new ScreenBoundsHandler(mockBoundsProvider);
+            transformWrapHandler = new TransformWrapHandler(_screenBoundsHandler);
             testGameObjects = new List<GameObject>();
         }
 

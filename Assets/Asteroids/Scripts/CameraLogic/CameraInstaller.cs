@@ -21,7 +21,7 @@ namespace Asteroids.CameraLogic
             builder.Register<ScreenBoundsProvider>(Lifetime.Singleton)
                 .As<IScreenBoundsProvider>();
             
-            builder.Register<ScreenWrapHandler>(Lifetime.Singleton)
+            builder.Register<ScreenBoundsHandler>(Lifetime.Singleton)
                 .WithParameter(resolver => resolver.Resolve<IScreenBoundsProvider>());
             
             builder.Register<TransformWrapHandler>(Lifetime.Singleton)

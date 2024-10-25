@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: BlueBullet
   m_EditorClassIdentifier: 
   <BulletType>k__BackingField: 0
-  <BulletPrefab>k__BackingField: {fileID: 4364742246325830873, guid: aa2e27739a74845d998bdcf1eaad0958, type: 3}
+  <BulletPrefab>k__BackingField: {fileID: 1189143892801747013, guid: aa2e27739a74845d998bdcf1eaad0958, type: 3}
+  <BulletSpeed>k__BackingField: 10

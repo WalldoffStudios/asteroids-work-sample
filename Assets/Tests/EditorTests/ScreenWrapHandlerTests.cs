@@ -16,7 +16,7 @@ namespace Asteroids.Tests.EditMode
     public class ScreenWrapHandlerTests
     {
         private MockScreenBoundsProvider mockBoundsProvider;
-        private ScreenWrapHandler screenWrapHandler;
+        private ScreenBoundsHandler _screenBoundsHandler;
 
         private Vector2 testPosition;
         private Vector2 expectedPosition;
@@ -30,7 +30,7 @@ namespace Asteroids.Tests.EditMode
         public void Setup()
         {
             mockBoundsProvider = new MockScreenBoundsProvider();
-            screenWrapHandler = new ScreenWrapHandler(mockBoundsProvider);
+            _screenBoundsHandler = new ScreenBoundsHandler(mockBoundsProvider);
             
             leftBound = -10f;
             rightBound = 10f;
@@ -52,7 +52,7 @@ namespace Asteroids.Tests.EditMode
             testPosition = new Vector2(rightBound + 1f, 0f);
             expectedPosition = new Vector2(leftBound, 0f);
 
-            Vector2 wrappedPosition = screenWrapHandler.WrapPosition(testPosition);
+            Vector2 wrappedPosition = _screenBoundsHandler.WrapPosition(testPosition);
 
             Assert.AreEqual(expectedPosition, wrappedPosition);
         }
@@ -66,7 +66,7 @@ namespace Asteroids.Tests.EditMode
             testPosition = new Vector2(leftBound - 1f, 0f);
             expectedPosition = new Vector2(rightBound, 0f);
 
-            Vector2 wrappedPosition = screenWrapHandler.WrapPosition(testPosition);
+            Vector2 wrappedPosition = _screenBoundsHandler.WrapPosition(testPosition);
 
             Assert.AreEqual(expectedPosition, wrappedPosition);
         }
@@ -80,7 +80,7 @@ namespace Asteroids.Tests.EditMode
             testPosition = new Vector2(0f, topBound + 1f);
             expectedPosition = new Vector2(0f, bottomBound);
 
-            Vector2 wrappedPosition = screenWrapHandler.WrapPosition(testPosition);
+            Vector2 wrappedPosition = _screenBoundsHandler.WrapPosition(testPosition);
 
             Assert.AreEqual(expectedPosition, wrappedPosition);
         }
@@ -94,7 +94,7 @@ namespace Asteroids.Tests.EditMode
             testPosition = new Vector2(0f, bottomBound - 1f);
             expectedPosition = new Vector2(0f, topBound);
 
-            Vector2 wrappedPosition = screenWrapHandler.WrapPosition(testPosition);
+            Vector2 wrappedPosition = _screenBoundsHandler.WrapPosition(testPosition);
 
             Assert.AreEqual(expectedPosition, wrappedPosition);
         }
@@ -108,7 +108,7 @@ namespace Asteroids.Tests.EditMode
             testPosition = new Vector2(0f, 0f);
             expectedPosition = testPosition;
 
-            Vector2 wrappedPosition = screenWrapHandler.WrapPosition(testPosition);
+            Vector2 wrappedPosition = _screenBoundsHandler.WrapPosition(testPosition);
 
             Assert.AreEqual(expectedPosition, wrappedPosition);
         }
@@ -122,7 +122,7 @@ namespace Asteroids.Tests.EditMode
             testPosition = new Vector2(rightBound + 1f, topBound + 1f);
             expectedPosition = new Vector2(leftBound, bottomBound);
 
-            Vector2 wrappedPosition = screenWrapHandler.WrapPosition(testPosition);
+            Vector2 wrappedPosition = _screenBoundsHandler.WrapPosition(testPosition);
 
             Assert.AreEqual(expectedPosition, wrappedPosition);
         }

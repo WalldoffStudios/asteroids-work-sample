@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7001760592947479701}
   - component: {fileID: 5134226211677118243}
-  - component: {fileID: 4364742246325830873}
   - component: {fileID: 6673292842367826508}
   - component: {fileID: 7974012832646803948}
+  - component: {fileID: 1189143892801747013}
   m_Layer: 0
   m_Name: BlueBullet
   m_TagString: Untagged
@@ -87,19 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4364742246325830873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6458663357063504681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d67245f71e2a647e38dffc53f5d0790b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody2D: {fileID: 6673292842367826508}
 --- !u!50 &6673292842367826508
 Rigidbody2D:
   serializedVersion: 4
@@ -162,3 +149,15 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.99999994, y: 1.9999999}
   m_Direction: 0
+--- !u!114 &1189143892801747013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458663357063504681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b85e5f49c622f43b4b40af6eef79ce90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -14,17 +14,24 @@ namespace Asteroids.Borders
     }
     public class TransformWrapHandler : IRegisterWrappingTransform, IUnregisterWrappingTransform, IFixedTickable
     {
-        private readonly ScreenWrapHandler _wrapHandler;
+        private readonly ScreenBoundsHandler _boundsHandler;
         private readonly HashSet<Transform> _transforms = new HashSet<Transform>();
+        private readonly HashSet<Transform> _transformsToAdd = new HashSet<Transform>();
+        private readonly HashSet<Transform> _transformsToRemove = new HashSet<Transform>();
 
-        public TransformWrapHandler(ScreenWrapHandler wrapHandler)
+        public TransformWrapHandler(ScreenBoundsHandler boundsHandler)
         {
-            _wrapHandler = wrapHandler;
+            _boundsHandler = boundsHandler;
         }
 
         public void RegisterTransform(Transform wrapperTransform)
         {
-            _transforms.Add(wrapperTransform);
+            _transformsToAdd.Add(wrapperTransform);
+        }
+        
+        public void UnregisterTransform(Transform wrapperTransform)
+        {
+            _transformsToRemove.Add(wrapperTransform);
         }
 
         public void FixedTick()
@@ -36,14 +43,21 @@ namespace Asteroids.Borders
                     continue;
                 }
 
-                Vector2 newPosition = _wrapHandler.WrapPosition(transform.position);
+                Vector2 newPosition = _boundsHandler.WrapPosition(transform.position);
                 transform.position = newPosition;
             }
-        }
 
-        public void UnregisterTransform(Transform wrapperTransform)
-        {
-            _transforms.Remove(wrapperTransform);
+            foreach (Transform transform in _transformsToAdd)
+            {
+                _transforms.Add(transform);
+            }
+            _transformsToAdd.Clear();
+            
+            foreach (Transform transform in _transformsToRemove)
+            {
+                _transforms.Remove(transform);
+            }
+            _transformsToRemove.Clear();
         }
     }
 }
