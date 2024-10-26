@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using VContainer.Unity;
 using UnityEngine;
@@ -12,16 +13,19 @@ namespace Asteroids.Borders
     {
         void UnregisterTransform(Transform wrapperTransform);
     }
-    public class TransformWrapHandler : IRegisterWrappingTransform, IUnregisterWrappingTransform, IFixedTickable
+    public class TransformWrapHandler : IRegisterWrappingTransform, IUnregisterWrappingTransform, IFixedTickable, IDisposable
     {
         private readonly ScreenBoundsHandler _boundsHandler;
-        private readonly HashSet<Transform> _transforms = new HashSet<Transform>();
-        private readonly HashSet<Transform> _transformsToAdd = new HashSet<Transform>();
-        private readonly HashSet<Transform> _transformsToRemove = new HashSet<Transform>();
+        private readonly HashSet<Transform> _transforms;
+        private readonly HashSet<Transform> _transformsToAdd;
+        private readonly HashSet<Transform> _transformsToRemove;
 
         public TransformWrapHandler(ScreenBoundsHandler boundsHandler)
         {
             _boundsHandler = boundsHandler;
+            _transforms = new HashSet<Transform>();
+            _transformsToAdd = new HashSet<Transform>();
+            _transformsToRemove = new HashSet<Transform>();
         }
 
         public void RegisterTransform(Transform wrapperTransform)
@@ -47,16 +51,17 @@ namespace Asteroids.Borders
                 transform.position = newPosition;
             }
 
-            foreach (Transform transform in _transformsToAdd)
-            {
-                _transforms.Add(transform);
-            }
+            _transforms.UnionWith(_transformsToAdd);
             _transformsToAdd.Clear();
             
-            foreach (Transform transform in _transformsToRemove)
-            {
-                _transforms.Remove(transform);
-            }
+            _transforms.ExceptWith(_transformsToRemove);
+            _transformsToRemove.Clear();
+        }
+
+        public void Dispose()
+        {
+            _transforms.Clear();
+            _transformsToAdd.Clear();
             _transformsToRemove.Clear();
         }
     }

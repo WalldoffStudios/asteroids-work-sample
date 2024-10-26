@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VContainer.Unity;
@@ -20,16 +21,19 @@ namespace Asteroids.Borders
         void UnRegisterRecycleTransform(IWrapRecycler wrapRecycler);
     }
     
-    public class TransformWrapRecycler : IRegisterRecyclableTransform, IUnregisterRecyclableTransform, IFixedTickable
+    public class TransformWrapRecycler : IRegisterRecyclableTransform, IUnregisterRecyclableTransform, IFixedTickable, IDisposable
     {
         private readonly ScreenBoundsHandler _boundsHandler;
-        private readonly HashSet<IWrapRecycler> _recyclableTransforms = new HashSet<IWrapRecycler>();
-        private readonly HashSet<IWrapRecycler> _recyclablesToAdd = new HashSet<IWrapRecycler>();
-        private readonly HashSet<IWrapRecycler> _recyclableToRemove = new HashSet<IWrapRecycler>();
+        private readonly HashSet<IWrapRecycler> _recyclableTransforms;
+        private readonly HashSet<IWrapRecycler> _recyclablesToAdd;
+        private readonly HashSet<IWrapRecycler> _recyclableToRemove;
 
         public TransformWrapRecycler(ScreenBoundsHandler boundsHandler)
         {
             _boundsHandler = boundsHandler;
+            _recyclableTransforms = new HashSet<IWrapRecycler>();
+            _recyclablesToAdd = new HashSet<IWrapRecycler>();
+            _recyclableToRemove = new HashSet<IWrapRecycler>();
         }
 
         public void RegisterRecycleTransform(IWrapRecycler wrapRecycler)
@@ -57,18 +61,18 @@ namespace Asteroids.Borders
                     wrapRecycler.ReturnTransformToPool();
                 }
             }
-
-            foreach (IWrapRecycler wrapRecycler in _recyclablesToAdd)
-            {
-                _recyclableTransforms.Add(wrapRecycler);
-                
-            }
+            
+            _recyclableTransforms.UnionWith(_recyclablesToAdd);
             _recyclablesToAdd.Clear();
             
-            foreach (IWrapRecycler wrapRecycler in _recyclableToRemove)
-            {
-                _recyclableTransforms.Remove(wrapRecycler);
-            }
+            _recyclableTransforms.ExceptWith(_recyclableToRemove);
+            _recyclableToRemove.Clear();
+        }
+        
+        public void Dispose()
+        {
+            _recyclableTransforms.Clear();
+            _recyclablesToAdd.Clear();
             _recyclableToRemove.Clear();
         }
     }
