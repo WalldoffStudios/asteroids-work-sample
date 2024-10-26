@@ -21,9 +21,13 @@ namespace Asteroids.Bullets
 
         public BulletPool(BulletDataCollection bulletDataCollection, Transform parentTransform, IObjectResolver resolver, int initialPoolSize = 10)
         {
-            _bulletDataCollection = bulletDataCollection ?? throw new ArgumentNullException(nameof(bulletDataCollection));
+            _bulletDataCollection = bulletDataCollection != null ? bulletDataCollection : throw new ArgumentNullException(nameof(bulletDataCollection));
             _parentTransform = parentTransform;
-            _resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
+            _resolver = resolver;
+            if (_resolver == null)
+            {
+                throw new ArgumentNullException(nameof(resolver));
+            }
 
             // Initialize pools for each bullet type present in the BulletDataCollection
             foreach (BulletType bulletType in _bulletDataCollection.AvailableBulletTypes)
