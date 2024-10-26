@@ -24,7 +24,6 @@ namespace Asteroids
             _transform = transform;
             _weapon = weapon;
             _bulletFactory = bulletFactory;
-            Debug.Log($"Is bullet factory null?: {bulletFactory == null}");
         }
         
         public void UpdateWeapon(IWeapon newWeapon)
@@ -40,8 +39,6 @@ namespace Asteroids
                 float rotationAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg -90;
                 
                 _bulletFactory.CreateBullet(_weapon.BulletType(), _transform.position + _transform.up * 0.8f, rotationAngle);
-                
-                //bullet.ShootBullet();
             }
         }
     }
