@@ -7,7 +7,6 @@ using VContainer.Unity;
 
 namespace Asteroids
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
     public class PlayerInstaller : LifetimeScope
     {
         [SerializeField] private LazerWeapon weapon = null;
