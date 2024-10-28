@@ -11,41 +11,37 @@ namespace Asteroids.Borders
         void ReturnTransformToPool();
     }
 
-    public interface IRegisterRecyclableTransform
+    public interface IScreenBoundsRecycler
     {
-        void RegisterRecycleTransform(IWrapRecycler wrapRecycler);
-    }
-
-    public interface IUnregisterRecyclableTransform
-    {
-        void UnRegisterRecycleTransform(IWrapRecycler wrapRecycler);
+        void RegisterWrapRecycler(IWrapRecycler wrapRecycler);
+        void UnregisterWrapRecycler(IWrapRecycler wrapRecycler);
     }
     
-    public class TransformWrapRecycler : IRegisterRecyclableTransform, IUnregisterRecyclableTransform, IFixedTickable, IDisposable
+    public class ScreenBoundsRecycler : IScreenBoundsRecycler, IFixedTickable, IDisposable
     {
         private readonly ScreenBoundsHandler _boundsHandler;
         private readonly HashSet<IWrapRecycler> _recyclableTransforms;
         private readonly HashSet<IWrapRecycler> _recyclablesToAdd;
         private readonly HashSet<IWrapRecycler> _recyclableToRemove;
 
-        public TransformWrapRecycler(ScreenBoundsHandler boundsHandler)
+        public ScreenBoundsRecycler(ScreenBoundsHandler boundsHandler)
         {
             _boundsHandler = boundsHandler;
             _recyclableTransforms = new HashSet<IWrapRecycler>();
             _recyclablesToAdd = new HashSet<IWrapRecycler>();
             _recyclableToRemove = new HashSet<IWrapRecycler>();
         }
-
-        public void RegisterRecycleTransform(IWrapRecycler wrapRecycler)
+        
+        public void RegisterWrapRecycler(IWrapRecycler wrapRecycler)
         {
             _recyclablesToAdd.Add(wrapRecycler);
         }
 
-        public void UnRegisterRecycleTransform(IWrapRecycler wrapRecycler)
+        public void UnregisterWrapRecycler(IWrapRecycler wrapRecycler)
         {
-            _recyclableToRemove.Add(wrapRecycler);
+            _recyclableToRemove.Add(wrapRecycler);    
         }
-
+        
         public void FixedTick()
         {
             foreach (IWrapRecycler wrapRecycler in _recyclableTransforms)

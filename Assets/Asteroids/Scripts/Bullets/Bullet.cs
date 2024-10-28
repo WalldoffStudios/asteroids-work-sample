@@ -1,4 +1,5 @@
 using Asteroids.Borders;
+using Asteroids.Obstacles;
 using UnityEngine;
 using VContainer;
 
@@ -12,17 +13,12 @@ namespace Asteroids.Bullets
         private BulletType _bulletType;
         private float _bulletSpeed;
 
-        private IRegisterRecyclableTransform _registerRecyclableTransform;
-        private IUnregisterRecyclableTransform _unregisterRecyclableTransform;
+        private IScreenBoundsRecycler _screenBoundsRecycler;
 
         [Inject]
-        public void Construct(
-            IRegisterRecyclableTransform registerRecyclableTransform,
-            IUnregisterRecyclableTransform unregisterRecyclableTransform)
+        public void Construct(IScreenBoundsRecycler screenBoundsRecycler)
         {
-            _registerRecyclableTransform = registerRecyclableTransform;
-            _unregisterRecyclableTransform = unregisterRecyclableTransform;
-            Debug.Log("Should have injected recyclables in bullet");
+            _screenBoundsRecycler = screenBoundsRecycler;
         }
 
         private void Awake()
@@ -43,12 +39,11 @@ namespace Asteroids.Bullets
 
             transform.position = position;
             transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
-
+            
             Vector2 direction = transform.up;
             _rigidbody.velocity = direction * _bulletSpeed;
             
-            // Register with TransformWrapRecycler
-            _registerRecyclableTransform.RegisterRecycleTransform(this);
+            _screenBoundsRecycler.RegisterWrapRecycler(this);
         }
 
         public Transform RecycleTransform()
@@ -63,13 +58,21 @@ namespace Asteroids.Bullets
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+            if (other.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(1);    
+            }
+            else
+            {
+                Debug.Log($"Bullet collided with object that can't be destroyed: {other.gameObject.name}");
+            }
+            
             ReturnToPool();
         }
 
         private void ReturnToPool()
         {
-            // Unregister from TransformWrapRecycler
-            _unregisterRecyclableTransform.UnRegisterRecycleTransform(this);
+            _screenBoundsRecycler.UnregisterWrapRecycler(this);
 
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.angularVelocity = 0f;

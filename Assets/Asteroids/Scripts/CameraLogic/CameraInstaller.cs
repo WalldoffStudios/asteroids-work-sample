@@ -25,8 +25,11 @@ namespace Asteroids.CameraLogic
                 .WithParameter(resolver => resolver.Resolve<IScreenBoundsProvider>());
             
             builder.Register<TransformWrapHandler>(Lifetime.Singleton)
-                .As<IRegisterWrappingTransform>()
-                .As<IUnregisterWrappingTransform>()
+                .As<IScreenBoundsTransporter>()
+                .As<IFixedTickable>();
+            
+            builder.Register<ScreenBoundsRecycler>(Lifetime.Singleton)
+                .As<IScreenBoundsRecycler>()
                 .As<IFixedTickable>();
         }
     }   

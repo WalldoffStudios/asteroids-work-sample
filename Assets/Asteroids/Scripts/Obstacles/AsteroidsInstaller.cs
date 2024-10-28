@@ -15,13 +15,17 @@ namespace Asteroids.Obstacles
         {
             base.Configure(builder);
 
+            builder.Register<AsteroidDestructionHandler>(Lifetime.Singleton)
+                .As<IHandleAsteroidDestroyed>()
+                .As<IAsteroidDestructionSubscription>();
+
             builder.Register<IAsteroidPool>(resolver =>
             {
                 return new AsteroidPool(
                     asteroidPrefab,
-                    parentTransform: transform,
+                    transform,
                     resolver,
-                    initialPoolSize: initialPoolSize
+                    initialPoolSize
                 );
             }, Lifetime.Singleton);
 
@@ -34,11 +38,16 @@ namespace Asteroids.Obstacles
                 .As<IGetScreenMoveDirection>();
 
             builder.Register<AsteroidSpawner>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<IAsteroidFactory>());
+
+            builder.Register<IntervalAsteroidSpawner>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<AsteroidSpawner>())
                 .WithParameter(resolver => resolver.Resolve<IGetScreenBorderPosition>())
                 .WithParameter(resolver => resolver.Resolve<IGetScreenMoveDirection>())
-                .WithParameter(resolver => resolver.Resolve<IAsteroidFactory>())
                 .WithParameter(delayBetweenSpawns)
-                .As<ITickable>();
+                .WithParameter(resolver => resolver.Resolve<IAsteroidDestructionSubscription>())
+                .As<ITickable>()
+                .As<IStartable>();
         }
     }   
 }

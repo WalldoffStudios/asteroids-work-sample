@@ -9,8 +9,7 @@ namespace Asteroids.Bullets
         [SerializeField]
         private BulletData[] bulletDataCollection = null;
         private Dictionary<BulletType, BulletData> bulletDataDict;
-
-        // New property to expose available bullet types
+        
         public IEnumerable<BulletType> AvailableBulletTypes => bulletDataDict.Keys;
 
         private void OnEnable()
@@ -36,11 +35,8 @@ namespace Asteroids.Bullets
             {
                 return data;
             }
-            else
-            {
-                Debug.LogError($"BulletData for BulletType {bulletType} not found in the current BulletDataCollection.");
-                return null;
-            }
+            Debug.LogError($"BulletData for BulletType {bulletType} not found in the current BulletDataCollection.");
+            return null;
         }
     }
 }

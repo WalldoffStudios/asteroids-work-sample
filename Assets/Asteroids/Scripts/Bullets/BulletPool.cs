@@ -28,8 +28,7 @@ namespace Asteroids.Bullets
             {
                 throw new ArgumentNullException(nameof(resolver));
             }
-
-            // Initialize pools for each bullet type present in the BulletDataCollection
+            
             foreach (BulletType bulletType in _bulletDataCollection.AvailableBulletTypes)
             {
                 var bulletData = _bulletDataCollection.GetBulletDataByType(bulletType);
@@ -55,9 +54,7 @@ namespace Asteroids.Bullets
             var bullet = UnityEngine.Object.Instantiate(prefab, _parentTransform);
             bullet.gameObject.SetActive(false);
             bullet.SetPool(this);
-            //bullet.SetBulletType(bulletType);
-
-            // Inject dependencies into the bullet
+            
             _resolver.Inject(bullet);
 
             return bullet;
@@ -69,11 +66,8 @@ namespace Asteroids.Bullets
             {
                 return pool.Get();
             }
-            else
-            {
-                Debug.LogError($"No bullet pool found for BulletType {bulletType}. Ensure it's included in the BulletDataCollection.");
-                return null;
-            }
+            Debug.LogError($"No bullet pool found for BulletType {bulletType}. Ensure it's included in the BulletDataCollection.");
+            return null;
         }
 
         public void ReleaseBullet(BulletType bulletType, Bullet bullet)

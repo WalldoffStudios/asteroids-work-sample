@@ -1,4 +1,3 @@
-using Asteroids.Borders;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -14,16 +13,8 @@ namespace Asteroids.Bullets
         {
             base.Configure(builder);
             
-            // Register BulletDataCollection
             builder.RegisterInstance(bulletDataCollection);
-
-            // Register TransformWrapRecycler and its interfaces
-            builder.Register<TransformWrapRecycler>(Lifetime.Singleton)
-                .As<IRegisterRecyclableTransform>()
-                .As<IUnregisterRecyclableTransform>()
-                .As<IFixedTickable>();
-
-            // Register BulletPool
+            
             builder.Register<IBulletPool>(resolver =>
             {
                 return new BulletPool(
@@ -33,9 +24,10 @@ namespace Asteroids.Bullets
                     initialPoolSize: initialPoolSize
                 );
             }, Lifetime.Singleton);
-
-            // Register BulletFactory
+            
             builder.Register<IBulletFactory, BulletFactory>(Lifetime.Singleton);
         }
+        
+        
     }   
 }

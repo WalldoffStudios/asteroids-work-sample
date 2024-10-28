@@ -1,3 +1,4 @@
+using Asteroids.Movement;
 using Asteroids.Player.InputHandling;
 using NUnit.Framework;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Asteroids.Tests.EditMode
             _mockRigidbody = new Rigidbody2D();
             builder.RegisterInstance(_mockRigidbody).As<Rigidbody2D>().AsSelf();
             
-            builder.Register<ObjectMover>(Lifetime.Singleton)
+            builder.Register<ContinuousMover>(Lifetime.Singleton)
                 .As<ISetMovementDirection>()
                 .As<IFixedTickable>();
             
@@ -40,8 +41,8 @@ namespace Asteroids.Tests.EditMode
         {
             ISetMovementDirection setMovementDirection = _container.Resolve<ISetMovementDirection>();
             
-            Assert.IsNotNull(setMovementDirection, "IApplyMovement was not resolved.");
-            Assert.IsInstanceOf<ObjectMover>(setMovementDirection, "Resolved IApplyMovement is not of type PlayerMovement.");
+            Assert.IsNotNull(setMovementDirection, "ISetMovementDirection was not resolved.");
+            Assert.IsInstanceOf<ContinuousMover>(setMovementDirection, "Resolved ISetMovementDirection is not of type PlayerMovement.");
         }
         
         [Test]

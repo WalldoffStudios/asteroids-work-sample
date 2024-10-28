@@ -1,5 +1,4 @@
-using Asteroids.Bullets;
-using UnityEngine;
+using Asteroids.Scripts.Managers;
 using VContainer;
 using VContainer.Unity;
 
@@ -28,6 +27,13 @@ namespace Asteroids
             //
             // // Register BulletFactory
             // builder.Register<IBulletFactory, BulletFactory>(Lifetime.Singleton);
+
+            builder.Register<GameStateChangeNotifier>(Lifetime.Singleton)
+                .As<IGameStateListener>()
+                .As<IGameStateSubscription>();
+
+            builder.Register<GameManager>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<IGameStateListener>());
         }
     }   
 }

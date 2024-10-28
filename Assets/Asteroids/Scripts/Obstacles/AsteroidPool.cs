@@ -53,7 +53,6 @@ namespace Asteroids.Obstacles
 
         public void ReleaseAsteroid(Asteroid asteroid)
         {
-            Debug.Log("Tried to release asteroid");
             _asteroidPool.Release(asteroid);
         }
     }

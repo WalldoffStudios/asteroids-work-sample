@@ -5,15 +5,13 @@ using UnityEngine;
 
 namespace Asteroids.Borders
 {
-    public interface IRegisterWrappingTransform
+    public interface IScreenBoundsTransporter
     {
         void RegisterTransform(Transform wrapperTransform);
-    }
-    public interface IUnregisterWrappingTransform
-    {
         void UnregisterTransform(Transform wrapperTransform);
     }
-    public class TransformWrapHandler : IRegisterWrappingTransform, IUnregisterWrappingTransform, IFixedTickable, IDisposable
+    
+    public class TransformWrapHandler : IScreenBoundsTransporter, IFixedTickable, IDisposable
     {
         private readonly ScreenBoundsHandler _boundsHandler;
         private readonly HashSet<Transform> _transforms;
