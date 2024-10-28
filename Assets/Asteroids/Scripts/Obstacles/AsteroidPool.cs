@@ -40,7 +40,6 @@ namespace Asteroids.Obstacles
         {
             var asteroid = UnityEngine.Object.Instantiate(prefab, _parentTransform);
             asteroid.gameObject.SetActive(false);
-            asteroid.SetPool(this);
             
             _resolver.Inject(asteroid);
 

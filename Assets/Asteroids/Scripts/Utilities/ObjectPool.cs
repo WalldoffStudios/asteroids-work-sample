@@ -18,7 +18,10 @@ namespace Asteroids.Pooling
             _onGet = onGet;
             _onRelease = onRelease;
             _initialSize = initialSize;
-            
+        }
+
+        protected virtual void Start()
+        {
             for (int i = 0; i < _initialSize; i++)
             {
                 var obj = _createFunc();

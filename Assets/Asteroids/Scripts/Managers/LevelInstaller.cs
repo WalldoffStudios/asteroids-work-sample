@@ -1,4 +1,3 @@
-using System;
 using Asteroids.Score;
 using VContainer;
 using VContainer.Unity;

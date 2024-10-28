@@ -12,26 +12,28 @@ namespace Asteroids.Obstacles
     }
     
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Asteroid : MonoBehaviour, IWrapRecycler, IDamageable, IDisposable
+    public class Asteroid : MonoBehaviour, IDamageable, IDisposable
     {
         private Rigidbody2D _rigidbody2D;
-        private AsteroidPool _pool;
         private int _asteroidLevel;
 
         private IScreenBoundsRecycler _screenBoundsRecycler;
+        private IScreenBoundsTransporter _screenBoundsTransporter;
         private IUpdateScore _updateScore;
         private IHandleAsteroidDestroyed _asteroidDestroyed;
+        private IAsteroidPool _asteroidPool;
 
         [Inject]
         public void Construct(
-            IScreenBoundsRecycler screenBoundsRecycler,
             IUpdateScore updateScore,
-            IHandleAsteroidDestroyed asteroidDestroyed
+            IScreenBoundsTransporter screenBoundsTransporter,
+            IHandleAsteroidDestroyed asteroidDestroyed, IAsteroidPool asteroidPool
             )
         {
-            _screenBoundsRecycler = screenBoundsRecycler;
+            _screenBoundsTransporter = screenBoundsTransporter;
             _updateScore = updateScore;
             _asteroidDestroyed = asteroidDestroyed;
+            _asteroidPool = asteroidPool;
         }
 
         private void Awake()
@@ -43,7 +45,7 @@ namespace Asteroids.Obstacles
             }
         }
 
-        public void SetPool(AsteroidPool pool) => _pool = pool;
+        //public void SetPool(AsteroidPool pool) => _pool = pool;
 
         public void Initialize(int asteroidLevel, Vector2 position, Vector2 direction, float speed)
         {
@@ -53,19 +55,22 @@ namespace Asteroids.Obstacles
             transform.position = position;
             _rigidbody2D.velocity = direction * speed;
             
-            _screenBoundsRecycler.RegisterWrapRecycler(this);
+            _screenBoundsTransporter.RegisterTransform(transform);
+            //_screenBoundsRecycler.RegisterWrapRecycler(this);
         }
         
         public Transform RecycleTransform() => transform;
 
         public void ReturnTransformToPool() => ReturnToPool();
 
-        public void ReturnToPool()
+        private void ReturnToPool()
         {
-            _screenBoundsRecycler.UnregisterWrapRecycler(this);
+            _screenBoundsTransporter.UnregisterTransform(transform);
+            //_screenBoundsRecycler.UnregisterWrapRecycler(this);
             _rigidbody2D.velocity = Vector2.zero;
             _rigidbody2D.angularVelocity = 0.0f;
-            _pool.ReleaseAsteroid(this);
+            _asteroidPool.ReleaseAsteroid(this);
+            //_pool.ReleaseAsteroid(this);
         }
 
         public void TakeDamage(int damage)
@@ -77,7 +82,6 @@ namespace Asteroids.Obstacles
 
         public void Dispose()
         {
-            Debug.Log("Returned asteroid to pool");
             ReturnToPool();
         }
     }   

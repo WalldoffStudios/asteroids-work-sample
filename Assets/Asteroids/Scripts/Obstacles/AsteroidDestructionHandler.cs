@@ -27,7 +27,6 @@ namespace Asteroids.Obstacles
         public void RegisterDestructionListener(IAsteroidDestructionListener destructionListener)
         {
             _destructionListeners.Add(destructionListener);
-            Debug.LogWarning("Registered the first listener");
         }
 
         public void UnregisterDestructionListener(IAsteroidDestructionListener destructionListener)
@@ -37,7 +36,6 @@ namespace Asteroids.Obstacles
 
         public void AsteroidDestroyed(Vector2 position, int level)
         {
-            Debug.LogWarning("Asteroid was destroyed, this was called in the destruction handler");
             foreach (var listener in _destructionListeners)
             {
                 listener.OnAsteroidDestroyed(position, level);

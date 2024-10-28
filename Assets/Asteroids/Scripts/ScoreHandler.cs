@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer.Unity;
 
 namespace Asteroids.Score
@@ -19,7 +18,6 @@ namespace Asteroids.Score
         
         public void UpdateScore(int amount)
         { 
-            Debug.Log($"Added score, previous score was: {_currentScore}, new score is: {_currentScore + amount}");
             _currentScore += amount;
         }
     }   

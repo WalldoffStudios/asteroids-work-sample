@@ -26,11 +26,6 @@ namespace Asteroids
             PlayerFacade playerInstance = Instantiate(playerPrefab);
             builder.RegisterComponent(playerInstance);
             
-            // builder.Register<ObjectMover>(Lifetime.Singleton)
-            //     .WithParameter(objectInstance.RigidBody)
-            //     .As<ISetMovementDirection>()
-            //     .As<IFixedTickable>();
-            
             builder.Register<ContinuousMover>(Lifetime.Singleton)
                 .WithParameter(playerInstance.RigidBody)
                 .As<ISetMovementDirection>()
@@ -44,10 +39,6 @@ namespace Asteroids
                 .As<IAddMovementCalculation>()
                 .As<ITickable>();
             
-            // builder.Register<MovementInputHandler>(Lifetime.Singleton)
-            //     .WithParameter(resolver => resolver.Resolve<IAddMovementCalculation>())
-            //     .WithParameter(movementSpeed)
-            //     .As<ITickable>();
             builder.Register<MovementInputHandler>(Lifetime.Singleton)
                 .WithParameter(resolver => resolver.Resolve<IAddMovementCalculation>())
                 .WithParameter(movementSpeed)
