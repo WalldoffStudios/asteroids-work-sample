@@ -10,7 +10,7 @@ namespace Asteroids.Tests.EditMode
     {
         private MockScreenBoundsProvider mockBoundsProvider;
         private ScreenBoundsHandler _screenBoundsHandler;
-        private TransformWrapHandler transformWrapHandler;
+        private ScreenBoundsTransporter _screenBoundsTransporter;
         private List<GameObject> testGameObjects;
 
         private float leftBound;
@@ -34,7 +34,8 @@ namespace Asteroids.Tests.EditMode
                 Bottom = bottomBound
             };
             _screenBoundsHandler = new ScreenBoundsHandler(mockBoundsProvider);
-            transformWrapHandler = new TransformWrapHandler(_screenBoundsHandler);
+            //Todo: fix this test
+            //transformWrapHandler = new TransformWrapHandler(_screenBoundsHandler);
             testGameObjects = new List<GameObject>();
         }
 
@@ -56,11 +57,11 @@ namespace Asteroids.Tests.EditMode
             GameObject obj1 = new GameObject("TestObject1");
             testGameObjects.Add(obj1);
             obj1.transform.position = new Vector2(rightBound + 1f, 0f);
-            transformWrapHandler.RegisterTransform(obj1.transform);
+            _screenBoundsTransporter.RegisterTransform(obj1.transform);
 
             Vector2 expectedPosition = new Vector2(leftBound, 0f);
 
-            transformWrapHandler.FixedTick();
+            _screenBoundsTransporter.FixedTick();
 
             Assert.AreEqual(expectedPosition, (Vector2)obj1.transform.position);
         }
@@ -77,7 +78,7 @@ namespace Asteroids.Tests.EditMode
 
             Vector2 initialPosition = obj1.transform.position;
 
-            transformWrapHandler.FixedTick();
+            _screenBoundsTransporter.FixedTick();
 
             Assert.AreEqual(initialPosition, (Vector2)obj1.transform.position);
         }
@@ -91,12 +92,12 @@ namespace Asteroids.Tests.EditMode
             GameObject obj1 = new GameObject("TestObject1");
             testGameObjects.Add(obj1);
 
-            transformWrapHandler.RegisterTransform(obj1.transform);
+            _screenBoundsTransporter.RegisterTransform(obj1.transform);
 
             obj1.transform.position = new Vector2(rightBound + 1f, 0f);
             Vector2 expectedPosition = new Vector2(leftBound, 0f);
 
-            transformWrapHandler.FixedTick();
+            _screenBoundsTransporter.FixedTick();
 
             Assert.AreEqual(expectedPosition, (Vector2)obj1.transform.position);
         }
@@ -110,13 +111,13 @@ namespace Asteroids.Tests.EditMode
             GameObject obj1 = new GameObject("TestObject1");
             testGameObjects.Add(obj1);
             obj1.transform.position = new Vector2(rightBound + 1f, 0f);
-            transformWrapHandler.RegisterTransform(obj1.transform);
+            _screenBoundsTransporter.RegisterTransform(obj1.transform);
 
-            transformWrapHandler.UnregisterTransform(obj1.transform);
+            _screenBoundsTransporter.UnregisterTransform(obj1.transform);
 
             Vector2 initialPosition = obj1.transform.position;
 
-            transformWrapHandler.FixedTick();
+            _screenBoundsTransporter.FixedTick();
 
             Assert.AreEqual(initialPosition, (Vector2)obj1.transform.position);
         }
@@ -128,11 +129,11 @@ namespace Asteroids.Tests.EditMode
         public void TestFixedTickSkipsNull()
         {
             GameObject obj1 = new GameObject("TestObject1");
-            transformWrapHandler.RegisterTransform(obj1.transform);
+            _screenBoundsTransporter.RegisterTransform(obj1.transform);
             Object.DestroyImmediate(obj1);
             testGameObjects.Remove(obj1);
 
-            Assert.DoesNotThrow(() => transformWrapHandler.FixedTick());
+            Assert.DoesNotThrow(() => _screenBoundsTransporter.FixedTick());
         }
 
         /// <summary>
@@ -144,12 +145,12 @@ namespace Asteroids.Tests.EditMode
             GameObject obj1 = new GameObject("TestObject1");
             testGameObjects.Add(obj1);
             obj1.SetActive(false);
-            transformWrapHandler.RegisterTransform(obj1.transform);
+            _screenBoundsTransporter.RegisterTransform(obj1.transform);
             obj1.transform.position = new Vector2(rightBound + 1f, 0f);
 
             Vector2 initialPosition = obj1.transform.position;
 
-            transformWrapHandler.FixedTick();
+            _screenBoundsTransporter.FixedTick();
 
             Assert.AreEqual(initialPosition, (Vector2)obj1.transform.position);
         }

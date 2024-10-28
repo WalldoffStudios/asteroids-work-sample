@@ -1,6 +1,5 @@
 using System;
-using Asteroids.Scripts;
-using Asteroids.Scripts.Managers;
+using Asteroids.Managers;
 using UnityEngine;
 using VContainer.Unity;
 

@@ -18,8 +18,15 @@ namespace Asteroids
         [field: SerializeField] public Rigidbody2D RigidBody { get; private set; } = null;
         [field: SerializeField] public Collider2D Collider { get; private set; } = null;
 
-        [Inject]
         private IScreenBoundsTransporter _screenBoundsTransporter;
+        
+        [Inject]
+        public void Construct(IScreenBoundsTransporter screenBoundsTransporter)
+        {
+            _screenBoundsTransporter = screenBoundsTransporter;
+        }
+        // [Inject]
+        // private IScreenBoundsTransporter _screenBoundsTransporter;
 
         private void Start()
         {

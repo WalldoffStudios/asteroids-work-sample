@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: Asteroids.Scripts.Managers.LevelInstaller
+    TypeName: Asteroids.Managers.LevelInstaller
   autoRun: 1
   autoInjectGameObjects: []
   mainCam: {fileID: 519420031}

@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Asteroids.Scripts
+namespace Asteroids.Managers
 {
     public enum LevelGameState
     {
@@ -18,7 +17,7 @@ namespace Asteroids.Scripts
         void OnLevelStateChanged(LevelGameState newState);
     }
     
-    public class LevelManager : IStartable, ITickable, IDisposable
+    public class LevelManager : IStartable, ITickable
     {
         private readonly ILevelStateListener _stateListener;
         private LevelGameState _currentState;
@@ -72,11 +71,6 @@ namespace Asteroids.Scripts
                 int nextState = ((int)_currentState + 1) % totalStates;
                 TransitionToState((LevelGameState)nextState);
             }
-        }
-
-        public void Dispose()
-        {
-            Debug.Log("Disposed of level manager");
         }
     }
 }

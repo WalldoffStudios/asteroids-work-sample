@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Asteroids.Pooling;
 using UnityEngine;
 using VContainer;
@@ -26,7 +27,7 @@ namespace Asteroids.Obstacles
             {
                 throw new ArgumentNullException(nameof(resolver));
             }
-
+            
             _asteroidPool = new ObjectPool<Asteroid>(
                 createFunc: () => CreateAsteroid(_asteroidPrefab),
                 onGet: null,
@@ -45,15 +46,9 @@ namespace Asteroids.Obstacles
 
             return asteroid;
         }
-        
-        public Asteroid GetAsteroid()
-        {
-            return _asteroidPool.Get();
-        }
 
-        public void ReleaseAsteroid(Asteroid asteroid)
-        {
-            _asteroidPool.Release(asteroid);
-        }
+        public Asteroid GetAsteroid() => _asteroidPool.Get();
+
+        public void ReleaseAsteroid(Asteroid asteroid) => _asteroidPool.Release(asteroid);
     }
 }

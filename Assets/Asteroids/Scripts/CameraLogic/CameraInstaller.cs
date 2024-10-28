@@ -1,4 +1,6 @@
+using System;
 using Asteroids.Borders;
+using Asteroids.Managers;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -24,13 +26,21 @@ namespace Asteroids.CameraLogic
             builder.Register<ScreenBoundsHandler>(Lifetime.Singleton)
                 .WithParameter(resolver => resolver.Resolve<IScreenBoundsProvider>());
             
-            builder.Register<TransformWrapHandler>(Lifetime.Singleton)
+            builder.Register<ScreenBoundsTransporter>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<ScreenBoundsHandler>())
+                .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())
                 .As<IScreenBoundsTransporter>()
-                .As<IFixedTickable>();
+                .As<IFixedTickable>()
+                .As<ILevelStateListener>()
+                .As<IDisposable>();
             
             builder.Register<ScreenBoundsRecycler>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<ScreenBoundsHandler>())
+                .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())
                 .As<IScreenBoundsRecycler>()
-                .As<IFixedTickable>();
+                .As<ILevelStateListener>()
+                .As<IFixedTickable>()
+                .As<IDisposable>();
         }
     }   
 }

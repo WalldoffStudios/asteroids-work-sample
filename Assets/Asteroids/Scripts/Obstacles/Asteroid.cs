@@ -6,14 +6,13 @@ using VContainer;
 
 namespace Asteroids.Obstacles
 {
-
     public interface IDamageable
     {
         void TakeDamage(int damage);
     }
     
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Asteroid : MonoBehaviour, IWrapRecycler, IDamageable
+    public class Asteroid : MonoBehaviour, IWrapRecycler, IDamageable, IDisposable
     {
         private Rigidbody2D _rigidbody2D;
         private AsteroidPool _pool;
@@ -49,6 +48,8 @@ namespace Asteroids.Obstacles
         public void Initialize(int asteroidLevel, Vector2 position, Vector2 direction, float speed)
         {
             _asteroidLevel = asteroidLevel; 
+            transform.localScale = Vector3.one * _asteroidLevel;
+            
             transform.position = position;
             _rigidbody2D.velocity = direction * speed;
             
@@ -57,12 +58,9 @@ namespace Asteroids.Obstacles
         
         public Transform RecycleTransform() => transform;
 
-        public void ReturnTransformToPool()
-        {
-            ReturnToPool();
-        }
+        public void ReturnTransformToPool() => ReturnToPool();
 
-        private void ReturnToPool()
+        public void ReturnToPool()
         {
             _screenBoundsRecycler.UnregisterWrapRecycler(this);
             _rigidbody2D.velocity = Vector2.zero;
@@ -74,6 +72,12 @@ namespace Asteroids.Obstacles
         {
             _asteroidDestroyed.AsteroidDestroyed(transform.position, _asteroidLevel);
             _updateScore.UpdateScore(1);
+            ReturnToPool();
+        }
+
+        public void Dispose()
+        {
+            Debug.Log("Returned asteroid to pool");
             ReturnToPool();
         }
     }   

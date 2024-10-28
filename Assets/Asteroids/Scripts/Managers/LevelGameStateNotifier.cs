@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Asteroids.Scripts.Managers
+namespace Asteroids.Managers
 {
     public interface ILevelStateSubscription
     {
@@ -10,7 +10,7 @@ namespace Asteroids.Scripts.Managers
         void UnregisterStateListener(ILevelStateListener stateListener);
     }
     
-    public class LevelGameStateNotifier : ILevelStateListener, ILevelStateSubscription, IDisposable
+    public class LevelGameStateNotifier : ILevelStateListener, ILevelStateSubscription
     {
         private readonly HashSet<ILevelStateListener> _stateListeners = new HashSet<ILevelStateListener>();
         
@@ -35,11 +35,6 @@ namespace Asteroids.Scripts.Managers
         public void UnregisterStateListener(ILevelStateListener stateListener)
         {
             _stateListeners.Remove(stateListener);
-        }
-
-        public void Dispose()
-        {
-            Debug.Log("Level game state notifier was disposed of");
         }
     }
 }
