@@ -29,19 +29,15 @@ namespace Asteroids
             
             builder.Register<ContinuousMover>(Lifetime.Singleton)
                 .WithParameter(playerInstance.RigidBody)
-                .As<ISetMovementDirection>()
+                .As<ISetMovement>()
                 .As<IFixedTickable>();
             
             builder.Register<ObjectRotator>(Lifetime.Singleton)
                 .WithParameter(playerInstance.RigidBody)
                 .As<ITickable>();
             
-            builder.Register<MovementCalculator>(Lifetime.Singleton)
-                .As<IAddMovementCalculation>()
-                .As<ITickable>();
-            
             builder.Register<MovementInputHandler>(Lifetime.Singleton)
-                .WithParameter(resolver => resolver.Resolve<IAddMovementCalculation>())
+                .WithParameter(resolver => resolver.Resolve<ISetMovement>())
                 .WithParameter(movementSpeed)
                 .AsImplementedInterfaces();
 

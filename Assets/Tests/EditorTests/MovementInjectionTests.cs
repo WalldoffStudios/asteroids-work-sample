@@ -21,15 +21,11 @@ namespace Asteroids.Tests.EditMode
             builder.RegisterInstance(_mockRigidbody).As<Rigidbody2D>().AsSelf();
             
             builder.Register<ContinuousMover>(Lifetime.Singleton)
-                .As<ISetMovementDirection>()
+                .As<ISetMovement>()
                 .As<IFixedTickable>();
             
-            builder.Register<MovementCalculator>(Lifetime.Singleton)
-                .As<IAddMovementCalculation>()
-                .As<ITickable>();
-            
             builder.Register<MovementInputHandler>(Lifetime.Singleton)
-                .WithParameter(resolver => resolver.Resolve<IAddMovementCalculation>())
+                .WithParameter(resolver => resolver.Resolve<ISetMovement>())
                 .WithParameter(50.0f) // Movement speed
                 .As<ITickable>();
             
@@ -39,20 +35,10 @@ namespace Asteroids.Tests.EditMode
         [Test]
         public void PlayerMovementResolved()
         {
-            ISetMovementDirection setMovementDirection = _container.Resolve<ISetMovementDirection>();
+            ISetMovement setMovement = _container.Resolve<ISetMovement>();
             
-            Assert.IsNotNull(setMovementDirection, "ISetMovementDirection was not resolved.");
-            Assert.IsInstanceOf<ContinuousMover>(setMovementDirection, "Resolved ISetMovementDirection is not of type PlayerMovement.");
-        }
-        
-        [Test]
-        public void MovementCalculatorResolved()
-        {
-            IAddMovementCalculation movementCalculation = _container.Resolve<IAddMovementCalculation>();
-    
-            // Assert
-            Assert.IsNotNull(movementCalculation, "IAddMovementCalculation was not resolved.");
-            Assert.IsInstanceOf<MovementCalculator>(movementCalculation, "Resolved IAddMovementCalculation is not of type MovementCalculator.");
+            Assert.IsNotNull(setMovement, "ISetMovementDirection was not resolved.");
+            Assert.IsInstanceOf<ContinuousMover>(setMovement, "Resolved ISetMovementDirection is not of type PlayerMovement.");
         }
 
         [Test]

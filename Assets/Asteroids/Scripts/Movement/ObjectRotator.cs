@@ -13,8 +13,14 @@ namespace Asteroids
 
         public void Tick()
         {
+            Rotate();
+        }
+
+        private void Rotate()
+        {
             Vector2 velocity = _rigidbody2D.velocity;
             if(velocity.magnitude < 1.0f) return;
+            
             Vector2 normalizedVelocity = velocity.normalized;
             float angle = Mathf.Atan2(normalizedVelocity.y, normalizedVelocity.x) * Mathf.Rad2Deg - 90.0f;
             _rigidbody2D.rotation = angle;
