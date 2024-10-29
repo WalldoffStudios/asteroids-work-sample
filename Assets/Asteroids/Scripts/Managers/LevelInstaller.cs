@@ -1,4 +1,5 @@
 using Asteroids.Score;
+using Asteroids.Utilities;
 using VContainer;
 using VContainer.Unity;
 
@@ -20,6 +21,7 @@ namespace Asteroids.Managers
                 .As<ITickable>();
 
             builder.Register<ScoreHandler>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<ISaveManager>())
                 .As<IStartable>()
                 .As<IUpdateScore>();
         }

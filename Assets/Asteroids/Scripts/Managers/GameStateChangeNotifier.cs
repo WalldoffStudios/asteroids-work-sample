@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Asteroids.Scripts.Managers
+namespace Asteroids.Managers
 {
     public interface IGameStateSubscription
     {
