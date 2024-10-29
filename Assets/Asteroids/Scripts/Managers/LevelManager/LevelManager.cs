@@ -23,7 +23,6 @@ namespace Asteroids.Managers
 
         public void Start()
         {
-            _saveManager.SetData(LevelKey, 1);
             TransitionToState(LevelGameState.Initializing);
             BuildLevel();
             TransitionToState(LevelGameState.Playing);

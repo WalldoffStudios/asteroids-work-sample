@@ -23,10 +23,7 @@ namespace Asteroids.Managers
                 .As<IScoreThresholdProvider>()
                 .As<ILevelManagerNotifier>();
             
-            //TODO: must register UI to keep track of score here
-            
             builder.Register<ScoreHandler>(Lifetime.Singleton)
-                .WithParameter(resolver => resolver.Resolve<ISaveManager>())
                 .WithParameter(resolver => resolver.Resolve<IScoreThresholdProvider>())
                 .WithParameter(resolver => resolver.Resolve<ILevelManagerNotifier>())
                 .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())

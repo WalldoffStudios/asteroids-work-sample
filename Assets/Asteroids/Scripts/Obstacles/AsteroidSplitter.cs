@@ -51,7 +51,7 @@ namespace Asteroids.Obstacles
                     Vector2 spawnDirection = new Vector2(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
                     Vector3 spawnPosition = position + (spawnDirection * 0.25f);
                     
-                    _spawner.SpawnAsteroid(level -1, spawnPosition, spawnDirection, 10.0f);
+                    _spawner.SpawnAsteroid(level -1, spawnPosition, spawnDirection, 3.0f);
                 }
             }
         }

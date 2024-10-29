@@ -11,10 +11,6 @@ namespace Asteroids.Score
     
     public class ScoreHandler : IAddToScore, ILevelStateListener, IDisposable
     {
-        private const string ScoreKey = "PlayerScore";
-        private const string HealthKey = "PlayerHealth";
-        
-        private readonly ISaveManager _saveManager;
         private readonly ILevelManagerNotifier _levelManagerNotifier;
         private readonly IScoreThresholdProvider _scoreThresholdProvider;
         private readonly ILevelStateSubscription _stateSubscription;
@@ -23,12 +19,10 @@ namespace Asteroids.Score
         private int _currentScore;
 
         public ScoreHandler(
-            ISaveManager saveManager, 
             IScoreThresholdProvider scoreThresholdProvider, 
             ILevelManagerNotifier levelManagerNotifier, 
             ILevelStateSubscription stateSubscription)
         {
-            _saveManager = saveManager;
             _scoreThresholdProvider = scoreThresholdProvider;
             _levelManagerNotifier = levelManagerNotifier;
             _stateSubscription = stateSubscription;
@@ -43,7 +37,7 @@ namespace Asteroids.Score
                 _currentScore = 0;
             }
 
-            if (_currentState == LevelGameState.GameOver)
+            if (_currentState == LevelGameState.LevelComplete)
             {
                 //TODO: save current wave or high score here
             }
@@ -52,7 +46,6 @@ namespace Asteroids.Score
         public void AddToScore(int amount)
         { 
             _currentScore += amount;
-            _saveManager.SetData(ScoreKey, _currentScore);
             if (_currentScore >= _scoreThresholdProvider.GetScoreToReach())
             {
                 _levelManagerNotifier.OnScoreReached();

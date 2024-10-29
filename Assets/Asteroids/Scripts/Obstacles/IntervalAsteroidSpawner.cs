@@ -53,7 +53,7 @@ namespace Asteroids.Obstacles
         {
             (Vector2 spawnPosition, BorderEdges edge) = _borderPositionProvider.BorderPositionWithEdge();
             Vector2 spawnDirection = _moveDirectionProvider.MoveDirection(edge);
-            _spawner.SpawnAsteroid(2, spawnPosition, spawnDirection, 10.0f);
+            _spawner.SpawnAsteroid(2, spawnPosition, spawnDirection, 3.0f);
         }
 
         public void Dispose()
