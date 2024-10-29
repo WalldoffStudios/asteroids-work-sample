@@ -52,11 +52,8 @@ namespace Asteroids.Pooling
 
         public void Release(T obj)
         {
-            if (_objectsInPool.Contains(obj))
-            {
-                Debug.LogError($"Tried to add object already existing in pool with name: {obj.gameObject.name}");
-                return;
-            }
+            if (_objectsInPool.Contains(obj)) return;
+            
             _onRelease?.Invoke(obj);
             obj.gameObject.SetActive(false);
             _poolStack.Push(obj);

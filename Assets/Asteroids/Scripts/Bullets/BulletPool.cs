@@ -8,10 +8,12 @@ namespace Asteroids.Bullets
 {
     public class BulletPool : IBulletPool
     {
+        private readonly HashSet<Bullet> _activeBullets = new HashSet<Bullet>();
         private readonly Dictionary<BulletType, ObjectPool<Bullet>> _bulletPools = new Dictionary<BulletType, ObjectPool<Bullet>>();
         private readonly BulletDataCollection _bulletDataCollection;
         private readonly Transform _parentTransform;
         private readonly IObjectResolver _resolver;
+        private bool _isClearing;
 
         public BulletPool(BulletDataCollection bulletDataCollection, Transform parentTransform, IObjectResolver resolver, int initialPoolSize = 10)
         {
@@ -30,8 +32,8 @@ namespace Asteroids.Bullets
                 {
                     var pool = new ObjectPool<Bullet>(
                         createFunc: () => CreateBullet(bulletData.BulletPrefab),
-                        onGet: null,
-                        onRelease: null,
+                        onGet: AddActiveBullet,
+                        onRelease: RemoveActiveBullet,
                         initialSize: initialPoolSize
                     );
                     _bulletPools[bulletType] = pool;
@@ -73,6 +75,27 @@ namespace Asteroids.Bullets
             {
                 Debug.LogError($"No bullet pool found for BulletType {bulletType}. Cannot release bullet.");
             }
+        }
+
+        public void AddActiveBullet(Bullet bullet)
+        {
+            if(_isClearing == false) _activeBullets.Add(bullet);
+        }
+
+        public void RemoveActiveBullet(Bullet bullet)
+        {
+            if(_isClearing == false) _activeBullets.Remove(bullet);
+        }
+
+        public void ClearPool()
+        {
+            _isClearing = true;
+            foreach (Bullet bullet in _activeBullets)
+            {
+                if(bullet.gameObject.activeSelf) ReleaseBullet(bullet.BulletType, bullet);
+            }
+            _activeBullets.Clear();
+            _isClearing = false;
         }
     }
 }

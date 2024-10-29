@@ -3,22 +3,6 @@ using UnityEngine;
 
 namespace Asteroids.Obstacles
 {
-    public interface IHandleAsteroidDestroyed
-    {
-        void AsteroidDestroyed(Vector2 position, int level);
-    }
-    
-    public interface IAsteroidDestructionListener
-    {
-        void OnAsteroidDestroyed(Vector2 position, int level);
-    }
-    
-    public interface IAsteroidDestructionSubscription
-    {
-        void RegisterDestructionListener(IAsteroidDestructionListener destructionListener);
-        void UnregisterDestructionListener(IAsteroidDestructionListener destructionListener);
-    }
-    
     public class AsteroidDestructionHandler : IHandleAsteroidDestroyed, IAsteroidDestructionSubscription
     {
         private readonly HashSet<IAsteroidDestructionListener> _destructionListeners =

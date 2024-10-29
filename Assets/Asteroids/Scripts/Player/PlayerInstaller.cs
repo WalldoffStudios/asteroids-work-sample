@@ -11,7 +11,7 @@ namespace Asteroids
 {
     public class PlayerInstaller : LifetimeScope
     {
-        [SerializeField] private LazerWeapon weapon = null;
+        [SerializeField] private BlueWeapon weapon = null;
         [SerializeField] private PlayerFacade playerPrefab = null;
         [SerializeField] private float movementSpeed = 10.0f;
         protected override void Configure(IContainerBuilder builder)
@@ -45,8 +45,8 @@ namespace Asteroids
                 .WithParameter(movementSpeed)
                 .AsImplementedInterfaces();
 
-            LazerWeapon lazerWeapon = Instantiate(weapon, playerInstance.transform);
-            builder.RegisterComponent(lazerWeapon).As<IWeapon>();
+            BlueWeapon blueWeapon = Instantiate(weapon, playerInstance.transform);
+            builder.RegisterComponent(blueWeapon).As<IWeapon>();
 
             builder.Register<PlayerShooting>(Lifetime.Singleton)
                 .WithParameter(playerInstance.transform)

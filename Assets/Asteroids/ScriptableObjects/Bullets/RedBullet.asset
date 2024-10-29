@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3085639403f2e4564a9f13c44b5b6a3e, type: 3}
   m_Name: RedBullet
   m_EditorClassIdentifier: 
-  <BulletType>k__BackingField: 0
-  <BulletPrefab>k__BackingField: {fileID: 1634959081599900687, guid: aa2e27739a74845d998bdcf1eaad0958, type: 3}
+  <BulletType>k__BackingField: 1
+  <BulletPrefab>k__BackingField: {fileID: 1634959081599900687, guid: 7d668f84d96d9475eb80081f24fa1602, type: 3}
   <BulletSpeed>k__BackingField: 10

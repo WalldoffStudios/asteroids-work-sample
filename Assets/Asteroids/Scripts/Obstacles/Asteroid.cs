@@ -6,11 +6,6 @@ using VContainer;
 
 namespace Asteroids.Obstacles
 {
-    public interface IDamageable
-    {
-        void TakeDamage(int damage);
-    }
-    
     [RequireComponent(typeof(Rigidbody2D))]
     public class Asteroid : MonoBehaviour, IDamageable, IWrapRecycler
     {

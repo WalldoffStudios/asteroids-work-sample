@@ -10,7 +10,7 @@ namespace Asteroids.Bullets
     {
         private Rigidbody2D _rigidbody;
         private IBulletPool _bulletPool;
-        private BulletType _bulletType;
+        public BulletType BulletType { get; private set; }
         private float _bulletSpeed;
         private bool isPooled;
 
@@ -31,7 +31,7 @@ namespace Asteroids.Bullets
 
         public void Initialize(BulletType bulletType, Vector2 position, float rotationAngle, float bulletSpeed)
         {
-            _bulletType = bulletType;
+            BulletType = bulletType;
             _bulletSpeed = bulletSpeed;
 
             transform.position = position;
@@ -76,7 +76,7 @@ namespace Asteroids.Bullets
             if (isPooled == false)
             {
                 _screenBoundsRecycler.UnregisterWrapRecycler(this);
-                _bulletPool.ReleaseBullet(_bulletType, this);
+                _bulletPool.ReleaseBullet(BulletType, this);
             }
 
             isPooled = true;

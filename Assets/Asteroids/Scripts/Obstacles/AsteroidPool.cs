@@ -6,15 +6,9 @@ using VContainer;
 
 namespace Asteroids.Obstacles
 {
-    public interface IAsteroidPool
-    {
-        Asteroid GetAsteroid();
-        void ReleaseAsteroid(Asteroid asteroid);
-        void ClearPool();
-    }
     public class AsteroidPool : IAsteroidPool
     {
-        public HashSet<Asteroid> _activeAsteroids = new HashSet<Asteroid>();
+        private readonly HashSet<Asteroid> _activeAsteroids = new HashSet<Asteroid>();
         private readonly ObjectPool<Asteroid> _asteroidPool;
         private readonly Asteroid _asteroidPrefab;
         private readonly Transform _parentTransform;
@@ -68,7 +62,7 @@ namespace Asteroids.Obstacles
             _isClearing = true;
             foreach (Asteroid asteroid in _activeAsteroids)
             {
-                ReleaseAsteroid(asteroid);
+                if(asteroid.gameObject.activeSelf) ReleaseAsteroid(asteroid);
             }
             _activeAsteroids.Clear();
             _isClearing = false;
