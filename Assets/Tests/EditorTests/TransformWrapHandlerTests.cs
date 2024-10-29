@@ -61,7 +61,7 @@ namespace Asteroids.Tests.EditMode
 
             Vector2 expectedPosition = new Vector2(leftBound, 0f);
 
-            _screenBoundsTransporter.FixedTick();
+            _screenBoundsTransporter.Tick();
 
             Assert.AreEqual(expectedPosition, (Vector2)obj1.transform.position);
         }
@@ -78,7 +78,7 @@ namespace Asteroids.Tests.EditMode
 
             Vector2 initialPosition = obj1.transform.position;
 
-            _screenBoundsTransporter.FixedTick();
+            _screenBoundsTransporter.Tick();
 
             Assert.AreEqual(initialPosition, (Vector2)obj1.transform.position);
         }
@@ -97,7 +97,7 @@ namespace Asteroids.Tests.EditMode
             obj1.transform.position = new Vector2(rightBound + 1f, 0f);
             Vector2 expectedPosition = new Vector2(leftBound, 0f);
 
-            _screenBoundsTransporter.FixedTick();
+            _screenBoundsTransporter.Tick();
 
             Assert.AreEqual(expectedPosition, (Vector2)obj1.transform.position);
         }
@@ -117,7 +117,7 @@ namespace Asteroids.Tests.EditMode
 
             Vector2 initialPosition = obj1.transform.position;
 
-            _screenBoundsTransporter.FixedTick();
+            _screenBoundsTransporter.Tick();
 
             Assert.AreEqual(initialPosition, (Vector2)obj1.transform.position);
         }
@@ -133,7 +133,7 @@ namespace Asteroids.Tests.EditMode
             Object.DestroyImmediate(obj1);
             testGameObjects.Remove(obj1);
 
-            Assert.DoesNotThrow(() => _screenBoundsTransporter.FixedTick());
+            Assert.DoesNotThrow(() => _screenBoundsTransporter.Tick());
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Asteroids.Tests.EditMode
 
             Vector2 initialPosition = obj1.transform.position;
 
-            _screenBoundsTransporter.FixedTick();
+            _screenBoundsTransporter.Tick();
 
             Assert.AreEqual(initialPosition, (Vector2)obj1.transform.position);
         }

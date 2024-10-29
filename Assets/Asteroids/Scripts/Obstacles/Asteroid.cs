@@ -12,26 +12,27 @@ namespace Asteroids.Obstacles
     }
     
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Asteroid : MonoBehaviour, IDamageable, IDisposable
+    public class Asteroid : MonoBehaviour, IDamageable, IWrapRecycler
     {
         private Rigidbody2D _rigidbody2D;
         private int _asteroidLevel;
 
         private IScreenBoundsRecycler _screenBoundsRecycler;
-        private IScreenBoundsTransporter _screenBoundsTransporter;
-        private IUpdateScore _updateScore;
+        private IAddToScore _addToScore;
         private IHandleAsteroidDestroyed _asteroidDestroyed;
         private IAsteroidPool _asteroidPool;
+        private bool isPooled;
 
         [Inject]
         public void Construct(
-            IUpdateScore updateScore,
-            IScreenBoundsTransporter screenBoundsTransporter,
-            IHandleAsteroidDestroyed asteroidDestroyed, IAsteroidPool asteroidPool
+            IAddToScore addToScore,
+            IScreenBoundsRecycler screenBoundsRecycler,
+            IHandleAsteroidDestroyed asteroidDestroyed,
+            IAsteroidPool asteroidPool
             )
         {
-            _screenBoundsTransporter = screenBoundsTransporter;
-            _updateScore = updateScore;
+            _screenBoundsRecycler = screenBoundsRecycler;
+            _addToScore = addToScore;
             _asteroidDestroyed = asteroidDestroyed;
             _asteroidPool = asteroidPool;
         }
@@ -45,8 +46,6 @@ namespace Asteroids.Obstacles
             }
         }
 
-        //public void SetPool(AsteroidPool pool) => _pool = pool;
-
         public void Initialize(int asteroidLevel, Vector2 position, Vector2 direction, float speed)
         {
             _asteroidLevel = asteroidLevel; 
@@ -55,33 +54,37 @@ namespace Asteroids.Obstacles
             transform.position = position;
             _rigidbody2D.velocity = direction * speed;
             
-            _screenBoundsTransporter.RegisterTransform(transform);
-            //_screenBoundsRecycler.RegisterWrapRecycler(this);
+            _screenBoundsRecycler.RegisterWrapRecycler(this);
+            isPooled = false;
         }
         
         public Transform RecycleTransform() => transform;
 
-        public void ReturnTransformToPool() => ReturnToPool();
+        public void ReturnTransformToPool()
+        {
+            if (gameObject.activeSelf == false)
+            {
+                Debug.LogError("Tried to return a asteroid that was inactive");
+            }
+            ReturnToPool();
+        }
 
         private void ReturnToPool()
         {
-            _screenBoundsTransporter.UnregisterTransform(transform);
-            //_screenBoundsRecycler.UnregisterWrapRecycler(this);
             _rigidbody2D.velocity = Vector2.zero;
             _rigidbody2D.angularVelocity = 0.0f;
-            _asteroidPool.ReleaseAsteroid(this);
-            //_pool.ReleaseAsteroid(this);
+            if (isPooled == false)
+            {
+                _screenBoundsRecycler.UnregisterWrapRecycler(this);
+                _asteroidPool.ReleaseAsteroid(this);
+            }
+            isPooled = true;
         }
 
         public void TakeDamage(int damage)
         {
+            _addToScore.AddToScore(1);
             _asteroidDestroyed.AsteroidDestroyed(transform.position, _asteroidLevel);
-            _updateScore.UpdateScore(1);
-            ReturnToPool();
-        }
-
-        public void Dispose()
-        {
             ReturnToPool();
         }
     }   

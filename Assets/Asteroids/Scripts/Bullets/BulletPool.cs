@@ -35,7 +35,7 @@ namespace Asteroids.Bullets
                 if (bulletData != null)
                 {
                     var pool = new ObjectPool<Bullet>(
-                        createFunc: () => CreateBullet(bulletData.BulletPrefab, bulletType),
+                        createFunc: () => CreateBullet(bulletData.BulletPrefab),
                         onGet: null,
                         onRelease: null,
                         initialSize: initialPoolSize
@@ -49,11 +49,10 @@ namespace Asteroids.Bullets
             }
         }
 
-        private Bullet CreateBullet(Bullet prefab, BulletType bulletType)
+        private Bullet CreateBullet(Bullet prefab)
         {
             var bullet = UnityEngine.Object.Instantiate(prefab, _parentTransform);
             bullet.gameObject.SetActive(false);
-            bullet.SetPool(this);
             
             _resolver.Inject(bullet);
 

@@ -12,7 +12,6 @@ namespace Asteroids
         {
             base.Configure(builder);
             
-            // Register SaveManager as a singleton
             builder.Register<SaveManager>(Lifetime.Singleton)
                 .As<ISaveManager>()
                 .As<IInitializable>()

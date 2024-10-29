@@ -4,19 +4,6 @@ using Random = UnityEngine.Random;
 
 namespace Asteroids.Borders
 {
-    public enum BorderEdges
-    {
-        Left = 0,
-        Right = 1,
-        Top = 2,
-        Bottom = 3
-    }
-
-    public interface IGetScreenBorderPosition
-    {
-        (Vector2 position, BorderEdges edge) BorderPositionWithEdge();
-    }
-    
     public class ScreenBorderPositionProvider : IGetScreenBorderPosition
     {
         private readonly IScreenBoundsProvider _screenBounds;

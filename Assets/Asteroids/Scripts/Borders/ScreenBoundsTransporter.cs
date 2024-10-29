@@ -6,13 +6,7 @@ using UnityEngine;
 
 namespace Asteroids.Borders
 {
-    public interface IScreenBoundsTransporter
-    {
-        void RegisterTransform(Transform wrapperTransform);
-        void UnregisterTransform(Transform wrapperTransform);
-    }
-    
-    public class ScreenBoundsTransporter : IScreenBoundsTransporter, IFixedTickable, ILevelStateListener, IDisposable
+    public class ScreenBoundsTransporter : IScreenBoundsTransporter, ITickable, ILevelStateListener, IDisposable
     {
         private readonly ScreenBoundsHandler _boundsHandler;
         private readonly HashSet<Transform> _transforms;
@@ -23,7 +17,6 @@ namespace Asteroids.Borders
 
         public ScreenBoundsTransporter(ScreenBoundsHandler boundsHandler, ILevelStateSubscription stateSubscription)
         {
-            Debug.Log("Setup screen bounds transporter");
             _boundsHandler = boundsHandler;
             _transforms = new HashSet<Transform>();
             _transformsToAdd = new HashSet<Transform>();
@@ -47,12 +40,14 @@ namespace Asteroids.Borders
             _transformsToRemove.Add(wrapperTransform);
         }
 
-        public void FixedTick()
+        public void Tick()
         {
             if(_currentState != LevelGameState.Playing) return;
+            _transforms.UnionWith(_transformsToAdd);
+            _transformsToAdd.Clear();
             foreach (var transform in _transforms)
             {
-                if (transform == null || !transform.gameObject.activeInHierarchy)
+                if (transform == null)
                 {
                     continue;
                 }
@@ -60,9 +55,6 @@ namespace Asteroids.Borders
                 Vector2 newPosition = _boundsHandler.WrapPosition(transform.position);
                 transform.position = newPosition;
             }
-
-            _transforms.UnionWith(_transformsToAdd);
-            _transformsToAdd.Clear();
             
             _transforms.ExceptWith(_transformsToRemove);
             _transformsToRemove.Clear();

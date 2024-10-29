@@ -30,7 +30,7 @@ namespace Asteroids.CameraLogic
                 .WithParameter(resolver => resolver.Resolve<ScreenBoundsHandler>())
                 .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())
                 .As<IScreenBoundsTransporter>()
-                .As<IFixedTickable>()
+                .As<ITickable>()
                 .As<ILevelStateListener>()
                 .As<IDisposable>();
             
@@ -39,8 +39,14 @@ namespace Asteroids.CameraLogic
                 .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())
                 .As<IScreenBoundsRecycler>()
                 .As<ILevelStateListener>()
-                .As<IFixedTickable>()
+                .As<ITickable>()
                 .As<IDisposable>();
+            
+            builder.Register<ScreenBorderPositionProvider>(Lifetime.Singleton)
+                .As<IGetScreenBorderPosition>();
+
+            builder.Register<ScreenMoveDirectionProvider>(Lifetime.Singleton)
+                .As<IGetScreenMoveDirection>();
         }
     }   
 }

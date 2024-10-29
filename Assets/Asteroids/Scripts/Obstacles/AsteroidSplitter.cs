@@ -40,7 +40,6 @@ namespace Asteroids.Obstacles
         public void OnAsteroidDestroyed(Vector2 position, int level)
         {
             if(_currentState != LevelGameState.Playing) return;
-            Debug.Log($"Called asteroid destroyed, current level is {level}");
             if (level > 1)
             {
                 //Todo: magical numbers, define it somewhere

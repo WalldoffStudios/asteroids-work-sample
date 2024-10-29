@@ -6,30 +6,27 @@ using VContainer;
 namespace Asteroids.Bullets
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public abstract class Bullet : MonoBehaviour, IWrapRecycler
+    public class Bullet : MonoBehaviour, IWrapRecycler
     {
         private Rigidbody2D _rigidbody;
         private IBulletPool _bulletPool;
         private BulletType _bulletType;
         private float _bulletSpeed;
+        private bool isPooled;
 
         private IScreenBoundsRecycler _screenBoundsRecycler;
 
         [Inject]
-        public void Construct(IScreenBoundsRecycler screenBoundsRecycler)
+        public void Construct(IScreenBoundsRecycler screenBoundsRecycler, IBulletPool pool)
         {
             _screenBoundsRecycler = screenBoundsRecycler;
+            _bulletPool = pool;
         }
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
             _rigidbody.gravityScale = 0;
-        }
-
-        public void SetPool(IBulletPool pool)
-        {
-            _bulletPool = pool;
         }
 
         public void Initialize(BulletType bulletType, Vector2 position, float rotationAngle, float bulletSpeed)
@@ -44,6 +41,7 @@ namespace Asteroids.Bullets
             _rigidbody.velocity = direction * _bulletSpeed;
             
             _screenBoundsRecycler.RegisterWrapRecycler(this);
+            isPooled = false;
         }
 
         public Transform RecycleTransform()
@@ -72,12 +70,16 @@ namespace Asteroids.Bullets
 
         private void ReturnToPool()
         {
-            _screenBoundsRecycler.UnregisterWrapRecycler(this);
-
             _rigidbody.velocity = Vector2.zero;
             _rigidbody.angularVelocity = 0f;
-            gameObject.SetActive(false);
-            _bulletPool.ReleaseBullet(_bulletType, this);
+
+            if (isPooled == false)
+            {
+                _screenBoundsRecycler.UnregisterWrapRecycler(this);
+                _bulletPool.ReleaseBullet(_bulletType, this);
+            }
+
+            isPooled = true;
         }
     }   
 }

@@ -33,12 +33,6 @@ namespace Asteroids.Obstacles
 
             builder.Register<IAsteroidFactory, AsteroidFactory>(Lifetime.Singleton);
 
-            builder.Register<ScreenBorderPositionProvider>(Lifetime.Singleton)
-                .As<IGetScreenBorderPosition>();
-
-            builder.Register<ScreenMoveDirectionProvider>(Lifetime.Singleton)
-                .As<IGetScreenMoveDirection>();
-
             builder.Register<AsteroidSpawner>(Lifetime.Singleton)
                 .WithParameter(resolver => resolver.Resolve<IAsteroidFactory>());
 

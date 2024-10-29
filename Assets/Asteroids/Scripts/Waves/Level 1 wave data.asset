@@ -9,9 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3085639403f2e4564a9f13c44b5b6a3e, type: 3}
-  m_Name: BlueBullet
+  m_Script: {fileID: 11500000, guid: a4b930a4b072449218ed74ac25f00b0f, type: 3}
+  m_Name: Level 1 wave data
   m_EditorClassIdentifier: 
-  <BulletType>k__BackingField: 0
-  <BulletPrefab>k__BackingField: {fileID: 1634959081599900687, guid: aa2e27739a74845d998bdcf1eaad0958, type: 3}
-  <BulletSpeed>k__BackingField: 10
+  <WaveObstacles>k__BackingField:
+  - level: 1
+    delayBeforeSpawn: 0
+  - level: 1
+    delayBeforeSpawn: 0
+  - level: 1
+    delayBeforeSpawn: 0
+  <MaxObstaclesAtATime>k__BackingField: 2

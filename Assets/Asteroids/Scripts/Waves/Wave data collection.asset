@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b930a4b072449218ed74ac25f00b0f, type: 3}
-  m_Name: New wave data
+  m_Script: {fileID: 11500000, guid: e7235246b72164dba8d9d97d69c76c43, type: 3}
+  m_Name: Wave data collection
   m_EditorClassIdentifier: 
-  <WaveObstacles>k__BackingField: []
-  <MaxObstaclesAtATime>k__BackingField: 3
+  <waveDataCollection>k__BackingField:
+  - {fileID: 11400000, guid: de89caa75c42445c7a8b9c97c9b2982b, type: 2}

@@ -4,10 +4,6 @@ using Random = UnityEngine.Random;
 
 namespace Asteroids.Borders
 {
-    public interface IGetScreenMoveDirection
-    {
-        Vector2 MoveDirection(BorderEdges spawnedEdge);
-    }
     public class ScreenMoveDirectionProvider : IGetScreenMoveDirection
     {
         private readonly IScreenBoundsProvider _screenBounds;

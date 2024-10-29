@@ -13,6 +13,5 @@ namespace Asteroids.Waves
     public class WaveData : ScriptableObject
     {
         [field: SerializeField] public WaveObstacle[] WaveObstacles { get; private set; } = null;
-        [field: SerializeField] public int MaxObstaclesAtATime { get; private set; } = 3;
     }   
 }

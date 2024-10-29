@@ -1,4 +1,5 @@
 using Asteroids.Bullets;
+using Asteroids.Managers;
 using Asteroids.Movement;
 using Asteroids.Player.InputHandling;
 using Asteroids.Weapons;
@@ -51,6 +52,7 @@ namespace Asteroids
                 .WithParameter(playerInstance.transform)
                 .WithParameter(resolver => resolver.Resolve<IWeapon>())
                 .WithParameter(resolver => resolver.Resolve<IBulletFactory>())
+                .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())
                 .As<IUpdateWeapon>()
                 .As<ITickable>();
         }

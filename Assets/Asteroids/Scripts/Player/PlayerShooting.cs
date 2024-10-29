@@ -1,4 +1,6 @@
+using System;
 using Asteroids.Bullets;
+using Asteroids.Managers;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -14,16 +16,25 @@ namespace Asteroids
         void UpdateWeapon(IWeapon newWeapon);
     }
     
-    public class PlayerShooting : ITickable, IUpdateWeapon 
+    public class PlayerShooting : ITickable, IUpdateWeapon, ILevelStateListener, IDisposable
     {
         private readonly Transform _transform;
-        private IWeapon _weapon;
         private readonly IBulletFactory _bulletFactory;
-        public PlayerShooting(Transform transform, IWeapon weapon, IBulletFactory bulletFactory)
+        private readonly ILevelStateSubscription _levelStateSubscription;
+        private IWeapon _weapon;
+        private LevelGameState _currentState;
+        
+        public PlayerShooting(
+            Transform transform,
+            IWeapon weapon,
+            IBulletFactory bulletFactory,
+            ILevelStateSubscription stateSubscription)
         {
             _transform = transform;
             _weapon = weapon;
             _bulletFactory = bulletFactory;
+            _levelStateSubscription = stateSubscription;
+            _levelStateSubscription.RegisterStateListener(this);
         }
         
         public void UpdateWeapon(IWeapon newWeapon)
@@ -31,8 +42,14 @@ namespace Asteroids
             _weapon = newWeapon;
         }
         
+        public void OnLevelStateChanged(LevelGameState newState)
+        {
+            _currentState = newState;
+        }
+        
         public void Tick()
         {
+            if(_currentState != LevelGameState.Playing) return;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Vector2 direction = _transform.up;
@@ -40,6 +57,11 @@ namespace Asteroids
                 
                 _bulletFactory.CreateBullet(_weapon.BulletType(), _transform.position + _transform.up * 0.8f, rotationAngle);
             }
+        }
+
+        public void Dispose()
+        {
+            _levelStateSubscription.UnregisterStateListener(this);
         }
     }
 }

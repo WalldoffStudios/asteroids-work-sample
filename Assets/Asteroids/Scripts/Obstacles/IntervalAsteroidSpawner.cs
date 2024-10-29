@@ -34,12 +34,8 @@ namespace Asteroids.Obstacles
         
         public void OnLevelStateChanged(LevelGameState newState)
         {
-            Debug.Log($"Level state changed in interval asteroid spawner");
             _currentState = newState;
-            if (_currentState == LevelGameState.Playing)
-            {
-                spawnTimer = 0.0f;
-            }
+            spawnTimer = 0.0f;
         }
         
         public void Tick()
