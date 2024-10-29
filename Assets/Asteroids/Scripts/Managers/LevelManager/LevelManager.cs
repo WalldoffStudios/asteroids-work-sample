@@ -5,29 +5,6 @@ using VContainer.Unity;
 
 namespace Asteroids.Managers
 {
-    public enum LevelGameState
-    {
-        Initializing = 0,
-        Playing = 1,
-        Paused = 2,
-        GameOver = 3,
-        LevelComplete = 4
-    }
-    public interface ILevelStateListener
-    {
-        void OnLevelStateChanged(LevelGameState newState);
-    }
-    
-    public interface IScoreThresholdProvider
-    {
-        int GetScoreToReach();
-    }
-
-    public interface ILevelManagerNotifier
-    {
-        void OnScoreReached();
-    }
-
     public class LevelManager : IStartable, ITickable, IScoreThresholdProvider, ILevelManagerNotifier
     {
         private const string LevelKey = "LevelKey";
@@ -58,6 +35,7 @@ namespace Asteroids.Managers
             Debug.Log($"Reached score of {_scoreToReach}, transitioning to completed state");
             TransitionToState(LevelGameState.LevelComplete);
             _saveManager.SetData(LevelKey, _currentLevel + 1);
+            _saveManager.Save(); //Save instantly since this is crucial data
             TransitionToState(LevelGameState.Initializing);
             BuildLevel();
             TransitionToState(LevelGameState.Playing);

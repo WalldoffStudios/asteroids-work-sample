@@ -2,19 +2,6 @@ using UnityEngine;
 
 namespace Asteroids.Bullets
 {
-   public enum BulletType
-    {
-        BlueBullet,
-        RedBullet,
-        GreenBullet,
-        PurpleBullet
-    }
-
-    public interface IBulletFactory
-    {
-        void CreateBullet(BulletType bulletType, Vector2 position, float rotationAngle);
-    }
-
     public class BulletFactory : IBulletFactory
     {
         private readonly IBulletPool _bulletPool;

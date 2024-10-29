@@ -27,7 +27,5 @@ namespace Asteroids.Bullets
             
             builder.Register<IBulletFactory, BulletFactory>(Lifetime.Singleton);
         }
-        
-        
     }   
 }

@@ -6,43 +6,11 @@ using VContainer.Unity;
 
 namespace Asteroids.Utilities
 {
-    public interface ISaveManager
-    {
-        void SetData<T>(string key, T value);
-        T GetData<T>(string key, T defaultValue = default);
-        void Save();
-        void Load();
-    }
-    
-    [Serializable]
-    public abstract class SaveData
-    {
-        public string Key;
-    }
-
-    [Serializable]
-    public class IntSaveData : SaveData
-    {
-        public int Value;
-    }
-
-    [Serializable]
-    public class FloatSaveData : SaveData
-    {
-        public float Value;
-    }
-
-    [Serializable]
-    public class StringSaveData : SaveData
-    {
-        public string Value;
-    }
-    
     public class SaveManager : ISaveManager, IInitializable, IDisposable
     {
         private const string SaveFileName = "saveData.json";
 
-        private Dictionary<string, object> _saveDataDictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _saveDataDictionary = new Dictionary<string, object>();
 
         public void Initialize()
         {

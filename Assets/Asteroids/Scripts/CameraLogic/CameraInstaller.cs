@@ -17,8 +17,7 @@ namespace Asteroids.CameraLogic
             builder.RegisterInstance(mainCam);
 
             builder.Register<CameraFacade>(Lifetime.Singleton)
-                .As<ICameraBoundsProvider>()
-                .As<IScreenToWorldPoint>();
+                .As<ICameraBoundsProvider>();
             
             builder.Register<ScreenBoundsProvider>(Lifetime.Singleton)
                 .As<IScreenBoundsProvider>();

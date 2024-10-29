@@ -43,8 +43,6 @@ namespace Asteroids.Borders
         public void Tick()
         {
             if(_currentState != LevelGameState.Playing) return;
-            _transforms.UnionWith(_transformsToAdd);
-            _transformsToAdd.Clear();
             foreach (var transform in _transforms)
             {
                 if (transform == null)
@@ -55,6 +53,9 @@ namespace Asteroids.Borders
                 Vector2 newPosition = _boundsHandler.WrapPosition(transform.position);
                 transform.position = newPosition;
             }
+            
+            _transforms.UnionWith(_transformsToAdd);
+            _transformsToAdd.Clear();
             
             _transforms.ExceptWith(_transformsToRemove);
             _transformsToRemove.Clear();

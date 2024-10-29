@@ -31,7 +31,11 @@ namespace Asteroids.Obstacles
                 );
             }, Lifetime.Singleton);
 
-            builder.Register<IAsteroidFactory, AsteroidFactory>(Lifetime.Singleton);
+            builder.Register<IAsteroidFactory, AsteroidFactory>(Lifetime.Singleton)
+                .WithParameter(resolver => resolver.Resolve<IAsteroidPool>())
+                .WithParameter(resolver => resolver.Resolve<ILevelStateSubscription>())
+                .As<ILevelStateListener>()
+                .As<IDisposable>();
 
             builder.Register<AsteroidSpawner>(Lifetime.Singleton)
                 .WithParameter(resolver => resolver.Resolve<IAsteroidFactory>());

@@ -27,24 +27,7 @@ namespace Asteroids.Borders
         
         public void OnLevelStateChanged(LevelGameState newState)
         {
-            LevelGameState previousState = _currentState;
             _currentState = newState;
-            if (previousState == LevelGameState.Playing && newState != LevelGameState.Playing)
-            {
-                foreach (IWrapRecycler wrapRecycler in _recyclableTransforms)
-                {
-                    Transform transform = wrapRecycler.RecycleTransform();
-                    if (transform == null || !transform.gameObject.activeSelf)
-                    {
-                        continue;
-                    }
-                    wrapRecycler.ReturnTransformToPool();
-                }
-                
-                _recyclableTransforms.Clear();
-                _recyclablesToAdd.Clear();
-                _recyclablesToRemove.Clear();
-            }
         }
         
         public void RegisterWrapRecycler(IWrapRecycler wrapRecycler)

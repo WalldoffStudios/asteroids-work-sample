@@ -6,12 +6,6 @@ using VContainer;
 
 namespace Asteroids.Bullets
 {
-    public interface IBulletPool
-    {
-        Bullet GetBullet(BulletType bulletType);
-        void ReleaseBullet(BulletType bulletType, Bullet bullet);
-    }
-
     public class BulletPool : IBulletPool
     {
         private readonly Dictionary<BulletType, ObjectPool<Bullet>> _bulletPools = new Dictionary<BulletType, ObjectPool<Bullet>>();

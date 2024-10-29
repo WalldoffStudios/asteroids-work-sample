@@ -1,15 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Asteroids.Managers
 {
-    public interface ILevelStateSubscription
-    {
-        void RegisterStateListener(ILevelStateListener stateListener);
-        void UnregisterStateListener(ILevelStateListener stateListener);
-    }
-    
     public class LevelGameStateNotifier : ILevelStateListener, ILevelStateSubscription
     {
         private readonly HashSet<ILevelStateListener> _stateListeners = new HashSet<ILevelStateListener>();
